@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import HomePage from './pages/homepage/homepage.component';
@@ -11,21 +11,12 @@ import { createStructuredSelector } from 'reselect'
 import CheckoutPage from './pages/checkout/checkout.component';
 import { checkUserSession } from './redux/user/user.actions';
 
-class App extends Component {
+const App = ({ checkUserSession, currentUser }) => {
 
+  useEffect(() => {
+    checkUserSession()
+  }, [checkUserSession]);
 
-  unsubscribeFromAuth = null
-
-  componentDidMount() {
-    const { checkUserSession } = this.props;
-    checkUserSession();
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
       return (
         <div>
           <Header />
@@ -33,13 +24,13 @@ class App extends Component {
             <Route exact path='/' component={HomePage} />
             <Route path='/shop' component={ShopPage} />
             <Route exact path='/checkout' component={CheckoutPage} />
-            <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
+            <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
           </Switch>
         </div>
   );
 }
 
-}
+
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
