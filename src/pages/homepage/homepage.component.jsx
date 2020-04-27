@@ -5,7 +5,6 @@ import Directory from '../../components/directory/directory.component'
 const HomePage = ({history}) => (
     <div className="homepage">
         <Directory />
-        <span></span>
     </div>
 )
 
